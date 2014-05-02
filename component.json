@@ -8,7 +8,7 @@
     "components/jquery": "master",
     "components/underscore": "^1.5.2",
     "GtSnaker/bootstrap-calendar": "master",
-    "GtSnaker/slick": "*",
+    "GtSnaker/slick": "master",
     "GtSnaker/message": "*",
     "component/jquery": "*"
   },

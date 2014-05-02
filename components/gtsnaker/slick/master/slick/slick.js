@@ -20,8 +20,8 @@
     'use strict';
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
-    } else if(typeof require === 'function') {
-        debugger
+    // } else if(typeof require === 'function') {
+    //     debugger
     } else {
         factory(jQuery);
     }
