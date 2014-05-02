@@ -20303,7 +20303,7 @@ return jQuery;
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master", function (exports, module) {
 /**
  * Bootstrap based calendar full view.
  *
@@ -20343,6 +20343,7 @@ if(!String.prototype.formatNum) {
 }
 
 (function($) {
+	var _ = require("components~underscore@1.5.2");
 
 	var defaults = {
 		// Width of the calendar
@@ -20363,7 +20364,7 @@ if(!String.prototype.formatNum) {
 		// - A function that received the start and end date, and that
 		//   returns an array of events (as described in events property description)
 		// - An array containing the events
-		events_source:      '',
+		events_source: '',
 		// Path to templates should end with slash /. It can be as relative
 		// /component/bootstrap-calendar/tmpls/
 		// or absolute
@@ -20429,10 +20430,15 @@ if(!String.prototype.formatNum) {
 		// -------------------------------------------------------------
 		events:             [],
 		templates:          {
-			year:  '',
-			month: '',
-			week:  '',
-			day:   ''
+			'day': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/day.html"),
+			'events-list': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/events-list.html"),
+			'modal': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/modal.html"),
+			'month-day': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/month-day.html"),
+			'month': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/month.html"),
+			'week-days': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/week-days.html"),
+			'week': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/week.html"),
+			'year-month': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/year-month.html"),
+			'year': require("gtsnaker~bootstrap-calendar-ok@master/tmpls/year.html")
 		},
 		stop_cycling:       false
 	};
@@ -20696,6 +20702,7 @@ if(!String.prototype.formatNum) {
 	Calendar.prototype._render = function() {
 		this.context.html('');
 		this._loadTemplate(this.options.view);
+		// debugger
 		this.stop_cycling = false;
 
 		var data = {};
@@ -21200,19 +21207,11 @@ if(!String.prototype.formatNum) {
 	};
 
 	Calendar.prototype._loadTemplate = function(name) {
-		if(this.options.templates[name]) {
+		var t;
+		if(typeof (t = this.options.templates[name]) !== 'string') {
 			return;
 		}
-		var self = this;
-		$.ajax({
-			url:      this.options.tmpl_path + name + '.html',
-			dataType: 'html',
-			type:     'GET',
-			async:    false,
-			cache:    this.options.tmpl_cache
-		}).done(function(html) {
-				self.options.templates[name] = _.template(html);
-			});
+		this.options.templates[name] = _.template(t);
 	};
 
 
@@ -21464,11 +21463,11 @@ if(!String.prototype.formatNum) {
 	$.fn.calendar = function(params) {
 		return new Calendar(params, this);
 	}
-}(require("components~jquery@master")));
+}(jQuery));
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/components/jstimezonedetect/jstz.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/components/jstimezonedetect/jstz.js", function (exports, module) {
 /**
  * This script gives you the zone info key representing your device's time zone setting.
  *
@@ -21830,7 +21829,7 @@ require.register("gtsnaker~bootstrap-calendar@master/components/jstimezonedetect
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/nl-NL.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/nl-NL.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -21909,7 +21908,7 @@ window.calendar_languages['nl-NL'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/fr-FR.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/fr-FR.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -21988,7 +21987,7 @@ window.calendar_languages['fr-FR'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/de-DE.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/de-DE.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22065,7 +22064,7 @@ window.calendar_languages['de-DE'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/el-GR.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/el-GR.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22149,7 +22148,7 @@ window.calendar_languages['el-GR'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/it-IT.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/it-IT.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22228,7 +22227,7 @@ window.calendar_languages['it-IT'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/pl-PL.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/pl-PL.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22309,7 +22308,7 @@ window.calendar_languages['pl-PL'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/pt-BR.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/pt-BR.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22385,7 +22384,7 @@ window.calendar_languages['pt-BR'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/es-MX.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/es-MX.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22462,7 +22461,7 @@ window.calendar_languages['es-MX'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/es-ES.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/es-ES.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22546,7 +22545,7 @@ window.calendar_languages['es-ES'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/ru-RU.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/ru-RU.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22624,7 +22623,7 @@ window.calendar_languages['ru-RU'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/sv-SE.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/sv-SE.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22703,7 +22702,7 @@ window.calendar_languages['sv-SE'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/zh-CN.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/zh-CN.js", function (exports, module) {
 if(!window.calendar_languages) {
 	window.calendar_languages = {};
 }
@@ -22777,7 +22776,7 @@ window.calendar_languages['zh-CN'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/language/cs-CZ.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/language/cs-CZ.js", function (exports, module) {
 // If you want to suggest a new language you can use this file as a template.
 // To reduce the file size you should remove the comment lines (the ones that start with // )
 if(!window.calendar_languages) {
@@ -22890,7 +22889,7 @@ window.calendar_languages['cs-CZ'] = {
 
 });
 
-require.register("gtsnaker~bootstrap-calendar@master/js/app.js", function (exports, module) {
+require.register("gtsnaker~bootstrap-calendar-ok@master/js/app.js", function (exports, module) {
 (function($) {
 
 	"use strict";
@@ -22964,6 +22963,24 @@ require.register("gtsnaker~bootstrap-calendar@master/js/app.js", function (expor
 	});
 }(jQuery));
 });
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/day.html", "<div id=\"cal-day-box\">\n\t<div class=\"row-fluid cal-row-head\">\n\t\t<div class=\"span1 col-xs-1 cal-cell\"><%= cal.locale.time %></div>\n\t\t<div class=\"span11 col-xs-11 cal-cell\"><%= cal.locale.events %></div>\n\t</div>\n\t<% if(all_day.length) {%>\n\t\t<div class=\"row-fluid clearfix cal-day-hour\">\n\t\t\t<div class=\"span1 col-xs-1\"><b><%= cal.locale.all_day %></b></div>\n\t\t\t<div class=\"span11 col-xs-11\">\n\t\t\t\t<% _.each(all_day, function(event){ %>\n\t\t\t\t\t<div class=\"day-highlight dh-<%= event.class %>\">\n\t\t\t\t\t\t<%= event.title %>\n\t\t\t\t\t</div>\n\t\t\t\t<% }); %>\n\t\t\t</div>\n\t\t</div>\n\t<% }; %>\n\t<% if(before_time.length) {%>\n\t\t<div class=\"row-fluid clearfix cal-day-hour\">\n\t\t\t<div class=\"span1 col-xs-3\"><b><%= cal.locale.before_time %></b></div>\n\t\t\t<div class=\"span5 col-xs-5\">\n\t\t\t\t<% _.each(before_time, function(event){ %>\n\t\t\t\t\t<div class=\"day-highlight dh-<%= event.class %>\">\n\t\t\t\t\t\t<span class=\"cal-hours pull-right\"><%= event.end_hour %></span>\n\t\t\t\t\t\t<%= event.title %>\n\t\t\t\t\t</div>\n\t\t\t\t<% }); %>\n\t\t\t</div>\n\t\t</div>\n\t<% }; %>\n\t<div id=\"cal-day-panel\" class=\"clearfix\">\n\t\t<% _.each(by_hour, function(event){ %>\n\t\t\t<div class=\"pull-left day-event day-highlight dh-<%= event.class %>\" style=\"margin-top: <%= (event.top * 30) %>px; height: <%= (event.lines * 30) %>px\">\n\t\t\t\t<span class=\"cal-hours\"><%= event.start_hour %> - <%= event.end_hour %></span>\n\t\t\t\t<%= event.title %>\n\t\t\t</div>\n\t\t<% }); %>\n\n\t\t<div id=\"cal-day-panel-hour\">\n\t\t\t<% for(i = 0; i < hours; i++){ %>\n\t\t\t\t<div class=\"cal-day-hour\">\n\t\t\t\t\t<% for(l = 0; l < in_hour; l++){ %>\n\t\t\t\t\t\t<div class=\"row-fluid cal-day-hour-part\">\n\t\t\t\t\t\t\t<div class=\"span1 col-xs-1\"><b><%= cal._hour(i, l) %></b></div>\n\t\t\t\t\t\t\t<div class=\"span11 col-xs-11\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t<% }; %>\n\t\t\t\t</div>\n\t\t\t<% }; %>\n\t\t</div>\n\t</div>\n\t<% if(after_time.length) {%>\n\t<div class=\"row-fluid clearfix cal-day-hour\">\n\t\t<div class=\"span1 col-xs-3\"><b><%= cal.locale.after_time %></b></div>\n\t\t<div class=\"span11 col-xs-9\">\n\t\t\t<% _.each(after_time, function(event){ %>\n\t\t\t<div class=\"day-highlight dh-<%= event.class %>\">\n\t\t\t\t<span class=\"cal-hours\"><%= event.start_hour %></span>\n\t\t\t\t<%= event.title %>\n\t\t\t</div>\n\t\t\t<% }); %>\n\t\t</div>\n\t</div>\n\t<% }; %>\n</div>");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/events-list.html", "<span id=\"cal-slide-tick\" style=\"display: none\"></span>\n<div id=\"cal-slide-content\" class=\"cal-event-list\">\n\t<ul class=\"unstyled list-unstyled\">\n\t\t<% _.each(events, function(event) { %>\n\t\t\t<li>\n\t\t\t\t<span class=\"pull-left event <%= event['class'] %>\"></span>&nbsp;\n\t\t\t\t<a href=\"<%= event.url ? event.url : 'javascript:void(0)' %>\" data-event-id=\"<%= event.id %>\"\n\t\t\t\t\tdata-event-class=\"<%= event['class'] %>\" class=\"event-item\">\n\t\t\t\t\t<%= event.title %></a>\n\t\t\t</li>\n\t\t<% }) %>\n\t</ul>\n</div>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/modal.html", "<% \tevent.date_start = new Date(parseInt(event.start));\n\tevent.date_end = new Date(parseInt(event.end)); %>\n<div id = \"event-meta\" class  = \"pull-right\">\n    <span>Starts on <%= event.date_start.getDate() %> <%= calendar.locale[\"m\" + event.date_start.getMonth()] %> <%= event.date_start.getFullYear() %>, at <%= event.date_start.getHours() %>:<%= event.date_start.getMinutes() %> <i class = \"icon-time\"></i></span><br />\n    <span>Ends on <%= event.date_end.getDate() %> <%= calendar.locale[\"m\" + event.date_end.getMonth()] %> <%= event.date_end.getFullYear() %> at <%= event.date_end.getHours() %>:<%= event.date_end.getMinutes() %> <i class = \"icon-time\"></i></span><br />\n</div>\n\n<div style = \"margin: 10px 0\">\n    <a href = \"<%= event.url %>\" class = \"btn btn-primary\"><i class = \"icon-calendar\"></i> More info</a>\n</div>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/month-day.html", "<div class=\"cal-month-day <%= cls %>\">\n\t<span class=\"pull-right\" data-cal-date=\"<%= data_day %>\" data-cal-view=\"day\" data-toggle=\"tooltip\" title=\"<%= tooltip %>\"><%= day %></span>\n\t<% if (events.length > 0) { %>\n\t\t<div class=\"events-list\" data-cal-start=\"<%= start %>\" data-cal-end=\"<%= end %>\">\n\t\t\t<% _.each(events, function(event) { %>\n\t\t\t\t<a href=\"<%= event.url ? event.url : 'javascript:void(0)' %>\" data-event-id=\"<%= event.id %>\" data-event-class=\"<%= event['class'] %>\"\n\t\t\t\t\tclass=\"pull-left event <%= event['class'] %>\" data-toggle=\"tooltip\"\n\t\t\t\t\ttitle=\"<%= event.title %>\"></a>\n\t\t\t<% }); %>\n\t\t</div>\n\t<% } %>\n</div>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/month.html", "<div class=\"cal-row-fluid cal-row-head\">\n\t<% _.each(months, function(name){ %>\n\t\t<div class=\"cal-cell1\"><%= name %></div>\n\t<% }) %>\n</div>\n<div class=\"cal-month-box\">\n\t<% for(i = 0; i < 6; i++) { %>\n\t\t<% if(cal.stop_cycling == true) break; %>\n\t\t<div class=\"cal-row-fluid cal-before-eventlist\">\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day1\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day2\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day3\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day4\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day5\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day6\"><%= cal._day(i, day++) %></div>\n\t\t\t<div class=\"cal-cell1 cal-cell\" data-cal-row=\"-day7\"><%= cal._day(i, day++) %></div>\n\t\t</div>\n\t<% } %>\n</div>");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/week-days.html", "<% _.each(events, function(event){ %>\n<div class=\"cal-row-fluid\">\n\t<div class=\"cal-cell<%= event.days%> cal-offset<%= event.start_day %> day-highlight dh-<%= event['class'] %>\" data-event-class=\"<%= event['class'] %>\">\n\t\t<a href=\"<%= event.url ? event.url : 'javascript:void(0)' %>\" data-event-id=\"<%= event.id %>\" class=\"cal-event-week event<%= event.id %>\"><%= event.title %></a>\n\t</div>\n</div>\n<% }); %>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/week.html", "<div class=\"cal-week-box\">\n\t<div class=\"cal-offset1 cal-column\"></div>\n\t<div class=\"cal-offset2 cal-column\"></div>\n\t<div class=\"cal-offset3 cal-column\"></div>\n\t<div class=\"cal-offset4 cal-column\"></div>\n\t<div class=\"cal-offset5 cal-column\"></div>\n\t<div class=\"cal-offset6 cal-column\"></div>\n\t<div class=\"cal-row-fluid cal-row-head\">\n\t\t<% _.each(months, function(name) { %>\n\t\t\t<div class=\"cal-cell1 <%= cal._getDayClass('week', start) %>\" data-toggle=\"tooltip\" title=\"<%= cal._getHolidayName(start) %>\"><%= name %><br>\n\t\t\t\t<small><span data-cal-date=\"<%= start.getFullYear() %>-<%= start.getMonthFormatted() %>-<%= start.getDateFormatted() %>\" data-cal-view=\"day\"><%= start.getDate() %> <%= cal.locale['ms' + start.getMonth()] %></span></small>\n\t\t\t</div>\n\t\t\t<% start.setDate(start.getDate() + 1); %>\n\t\t<% }) %>\n\t</div>\n\t<hr>\n\t<%= cal._week() %>\n</div>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/year-month.html", "<span class=\"pull-right\" data-cal-date=\"<%= data_day %>\" data-cal-view=\"month\"><%= month_name %></span>\n<% if (events.length > 0) { %>\n\t<small class=\"cal-events-num badge badge-important pull-left\"><%= events.length %></small>\n\t<div class=\"hide events-list\" data-cal-start=\"<%= start %>\" data-cal-end=\"<%= end %>\">\n\t\t<% _.each(events, function(event) { %>\n\t\t\t<a href=\"<%= event.url ? event.url : 'javascript:void(0)' %>\" data-event-id=\"<%= event.id %>\" data-event-class=\"<%= event['class'] %>\"\n\t\t\t\tclass=\"pull-left event <%= event['class'] %> event<%= event.id %>\" data-toggle=\"tooltip\"\n\t\t\t\ttitle=\"<%= event.title %>\"></a>\n\t\t<% }); %>\n\t</div>\n<% } %>\n");
+
+require.define("gtsnaker~bootstrap-calendar-ok@master/tmpls/year.html", "<div class=\"cal-year-box\">\n\t<div class=\"row row-fluid cal-before-eventlist\">\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month1\"><%= cal._month(0) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month2\"><%= cal._month(1) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month3\"><%= cal._month(2) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month4\"><%= cal._month(3) %></div>\n\t</div>\n\t<div class=\"row row-fluid cal-before-eventlist\">\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month1\"><%= cal._month(4) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month2\"><%= cal._month(5) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month3\"><%= cal._month(6) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month4\"><%= cal._month(7) %></div>\n\t</div>\n\t<div class=\"row row-fluid cal-before-eventlist\">\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month1\"><%= cal._month(8) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month2\"><%= cal._month(9) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month3\"><%= cal._month(10) %></div>\n\t\t<div class=\"span3 col-md-3 cal-cell\" data-cal-row=\"-month4\"><%= cal._month(11) %></div>\n\t</div>\n</div>\n");
 
 require.register("gtsnaker~slick@master", function (exports, module) {
 /*
@@ -24640,6 +24657,7 @@ require.register("gtsnaker~slick@master", function (exports, module) {
 
 require.register("components-demo", function (exports, module) {
 //MESSAJE
+require("gtsnaker~bootstrap-calendar-ok@master")
 require("gtsnaker~message@master")
 
 function rich_confirm(){
@@ -24934,7 +24952,7 @@ jQuery(document).ready(function($) {
 		}
 	};
 
-	require("gtsnaker~bootstrap-calendar@master");
+	require("gtsnaker~bootstrap-calendar-ok@master");
 	var calendar = $('#calendar').calendar(options);
 
 	$('.btn-group button[data-calendar-nav]').each(function() {

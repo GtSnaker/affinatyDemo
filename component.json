@@ -7,7 +7,7 @@
   "dependencies": {
     "components/jquery": "master",
     "components/underscore": "^1.5.2",
-    "GtSnaker/bootstrap-calendar": "master",
+    "GtSnaker/bootstrap-calendar-ok": "master",
     "GtSnaker/slick": "master",
     "GtSnaker/message": "*",
     "component/jquery": "*"

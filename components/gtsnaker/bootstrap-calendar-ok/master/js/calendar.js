@@ -37,6 +37,7 @@ if(!String.prototype.formatNum) {
 }
 
 (function($) {
+	var _ = require('underscore');
 
 	var defaults = {
 		// Width of the calendar
@@ -57,7 +58,7 @@ if(!String.prototype.formatNum) {
 		// - A function that received the start and end date, and that
 		//   returns an array of events (as described in events property description)
 		// - An array containing the events
-		events_source:      '',
+		events_source: '',
 		// Path to templates should end with slash /. It can be as relative
 		// /component/bootstrap-calendar/tmpls/
 		// or absolute
@@ -123,10 +124,15 @@ if(!String.prototype.formatNum) {
 		// -------------------------------------------------------------
 		events:             [],
 		templates:          {
-			year:  '',
-			month: '',
-			week:  '',
-			day:   ''
+			'day': require("../tmpls/day.html"),
+			'events-list': require("../tmpls/events-list.html"),
+			'modal': require("../tmpls/modal.html"),
+			'month-day': require("../tmpls/month-day.html"),
+			'month': require("../tmpls/month.html"),
+			'week-days': require("../tmpls/week-days.html"),
+			'week': require("../tmpls/week.html"),
+			'year-month': require("../tmpls/year-month.html"),
+			'year': require("../tmpls/year.html")
 		},
 		stop_cycling:       false
 	};
@@ -390,6 +396,7 @@ if(!String.prototype.formatNum) {
 	Calendar.prototype._render = function() {
 		this.context.html('');
 		this._loadTemplate(this.options.view);
+		// debugger
 		this.stop_cycling = false;
 
 		var data = {};
@@ -894,19 +901,11 @@ if(!String.prototype.formatNum) {
 	};
 
 	Calendar.prototype._loadTemplate = function(name) {
-		if(this.options.templates[name]) {
+		var t;
+		if(typeof (t = this.options.templates[name]) !== 'string') {
 			return;
 		}
-		var self = this;
-		$.ajax({
-			url:      this.options.tmpl_path + name + '.html',
-			dataType: 'html',
-			type:     'GET',
-			async:    false,
-			cache:    this.options.tmpl_cache
-		}).done(function(html) {
-				self.options.templates[name] = _.template(html);
-			});
+		this.options.templates[name] = _.template(t);
 	};
 
 
@@ -1158,4 +1157,4 @@ if(!String.prototype.formatNum) {
 	$.fn.calendar = function(params) {
 		return new Calendar(params, this);
 	}
-}(require("components-jquery")));
+}(jQuery));

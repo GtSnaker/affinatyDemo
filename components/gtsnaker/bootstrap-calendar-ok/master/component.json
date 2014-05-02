@@ -26,9 +26,20 @@
     "js/language/cs-CZ.js",
     "js/app.js"
   ],
+  "templates": [
+    "tmpls/day.html",
+    "tmpls/events-list.html",
+    "tmpls/modal.html",
+    "tmpls/month-day.html",
+    "tmpls/month.html",
+    "tmpls/week-days.html",
+    "tmpls/week.html",
+    "tmpls/year-month.html",
+    "tmpls/year.html"
+  ],
   "styles": [
     "css/calendar.css"
   ],
   "repository": "rslnautic/bootstrap-calendar",
-  "repo": "gtsnaker/bootstrap-calendar"
+  "repo": "gtsnaker/bootstrap-calendar-ok"
 }

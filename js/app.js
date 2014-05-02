@@ -1,4 +1,5 @@
 //MESSAJE
+require('GtSnaker-bootstrap-calendar-ok')
 require('GtSnaker-message')
 
 function rich_confirm(){
@@ -293,7 +294,7 @@ jQuery(document).ready(function($) {
 		}
 	};
 
-	require('bootstrap-calendar');
+	require('bootstrap-calendar-ok');
 	var calendar = $('#calendar').calendar(options);
 
 	$('.btn-group button[data-calendar-nav]').each(function() {
