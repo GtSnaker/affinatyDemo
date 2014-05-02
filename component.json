@@ -10,7 +10,7 @@
     "GtSnaker/bootstrap-calendar-ok": "master",
     "GtSnaker/slick": "master",
     "GtSnaker/message": "*",
-    "component/jquery": "*"
+    "components/jquery": "*"
   },
   "development": {},
   "scripts": [
