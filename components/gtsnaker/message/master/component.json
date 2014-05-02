@@ -1,0 +1,15 @@
+{
+  "name": "message",
+  "description": "the last carousel you'll ever need",
+  "version": "1.0.9",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "scripts": [
+    "codebase/message.js"
+  ],
+  "styles": [
+    "codebase/themes/message_solid.css"
+  ],
+  "repository": "GtSnaker/message"
+}
