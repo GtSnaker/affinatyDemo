@@ -51,7 +51,7 @@ function parse_msg_txt(text, el) {
 		console.log(newText);
 		// array.push(newText);
 		if((newText = text.substr(0, s-1).trim()).length > 0) {
-			el.slickAdd('<p>'+newText+'</p>');
+			el.slickAdd('<div><p>'+newText+'</p></div>');
 		}
 
 		var id;
@@ -59,14 +59,14 @@ function parse_msg_txt(text, el) {
 			// parse for youtube urls
 			console.log("yt:", id = youtube_parse(url));
 			//array.push({youtube: youtube_parse(url)});
-			el.slickAdd('<p>youtube: '+id+'</p>');
+			el.slickAdd('<div><p>youtube: '+id+'</p></div>');
 		} else {
 			// array.push({url: url});
-			el.slickAdd('<p>url: '+url+'</p>');
+			el.slickAdd('<div><p>url: '+url+'</p></div>');
 		}
 
 		if((id = text.substr(s+end).trim()).length > 0) {
-			el.slickAdd('<p>'+id+'</p>');
+			el.slickAdd('<div><p>'+id+'</p></div>');
 		}
 		// array.push();
 	} else if((text = text.trim()).length > 0) {
@@ -123,7 +123,7 @@ $(document).ready(function() {
 
 function update_slick(text) {
 	// ... everything you need to do, here
-	var el = $('#videos'); //.empty();
+	var el = $('#videos').slickRemove();
 	parse_msg_txt(text.trim(), el);
 
 }
@@ -131,7 +131,7 @@ function update_slick(text) {
 
 	var old_array = [];
 
-	$('textarea.form-control').bind("keyup", function(e) {
+	$('textarea.form-control').bind("change", function(e) {
 
 		console.log("e", update_slick(e.target.value));
 	})
