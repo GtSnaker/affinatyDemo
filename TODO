@@ -1,0 +1,10 @@
+TODO
+1. parse the text in the text box...
+example "some text http://www.youtube.com/watch?v=B_3Ra_Qx-p8 otro texto"
+should return an array [
+	"some text",
+	{ youtube: "B_3Ra_Qx-p8" }, // http://img.youtube.com/vi/..id../mqdefault.jpg
+	"otro texto"
+]
+
+2. crear cada array in un slick gallery example: "slider add-remove"
