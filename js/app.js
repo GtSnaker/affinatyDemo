@@ -22,6 +22,7 @@ window.rich_confirm = rich_confirm;
 // ripped from:
 // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
 var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+
 function youtube_parse(url) {
   var match;
   if((match = url.match(yt_regex)) && match[7].length === 11) {
@@ -30,30 +31,70 @@ function youtube_parse(url) {
 }
 
 var url_regex = /(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
-function parse_msg_txt(text) {
+function parse_msg_txt(text, el) {
 	var v, s;
-	console.log('...', url_regex.exec(text));
+	var newText;
+	var array = [];
+
+	//console.log('...', url_regex.exec(text));
 	// debugger;
 	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0]))) {
 		var url = text.substr(s);
 		var end;
+
 		if(~(end = url.indexOf(' '))) {
 			// if url has a space, we only want till the the space
 			//end = null;
 			url = url.substr(0, end);
 		}
 
+		console.log(newText);
+		// array.push(newText);
+		if((newText = text.substr(0, s-1).trim()).length > 0) {
+			el.slickAdd('<p>'+newText+'</p>');
+		}
+
+		var id;
 		if(~url.indexOf('youtube.com')) {
 			// parse for youtube urls
-			console.log("yt:", youtube_parse(url))
+			console.log("yt:", id = youtube_parse(url));
+			//array.push({youtube: youtube_parse(url)});
+			el.slickAdd('<p>youtube: '+id+'</p>');
 		} else {
-			console.log("unknown media type")
+			// array.push({url: url});
+			el.slickAdd('<p>url: '+url+'</p>');
 		}
+
+		if((id = text.substr(s+end).trim()).length > 0) {
+			el.slickAdd('<p>'+id+'</p>');
+		}
+		// array.push();
+	} else if((text = text.trim()).length > 0) {
+		// array.push(text.trim());
+		// el.slickAdd('<p>'+id+'</p>');
+		parse_msg_txt(text, el);
 	}
+
+	// if(array[0].length) {
+	// 	console.log("TWEXT", array[0])
+	// }
+	// var o, id;
+	// if(typeof (o = array[1]) === 'object') {
+	// 	if(id = o.youtube) {
+	// 		console.log("youtube!!!", id)
+	// 	} else if(id = o.url) {
+	// 		console.log("url!!!!", id)
+	// 	}
+	// }
+	// if(typeof (id = array[2]) === 'string' && id.length) {
+	// 	parse_msg_txt(id, el);
+	// }
+	// console.log('returning...', array)
+	// return array;
 }
 window.parse_msg_txt = parse_msg_txt;
 window.youtube_parse = youtube_parse;
-parse_msg_txt('lkjlkj  http://www.youtube.com/watch?v=7J6VXuEVmio more text');
+//parse_msg_txt('lkjlkj  http://www.youtube.com/watch?v=7J6VXuEVmio more text');
 
 
 //SLICK
@@ -79,15 +120,27 @@ $(document).ready(function() {
 	}
 	//*/
 
-function update_slick(array) {
+
+function update_slick(text) {
 	// ... everything you need to do, here
-	old_array = array;
+	var el = $('#videos'); //.empty();
+	parse_msg_txt(text.trim(), el);
+
 }
 
+
 	var old_array = [];
+
 	$('textarea.form-control').bind("keyup", function(e) {
-		console.log("e", update_slick(parse_msg_txt(e.target.value)));
+
+		console.log("e", update_slick(e.target.value));
 	})
+
+	// for(var i=0; i < array.length; i++) {
+	// 	if(!_.isDeepEqual(array[i], old_array[i])) {
+	// 		// updte the element
+	// 	}
+	// }
 
 	///*
 	for(var i = 0; i < imgs.length; i++) {
@@ -112,13 +165,6 @@ function update_slick(array) {
 		slideIndex++;
 		$('.add-remove').slickAdd('<div><p>' + texto + '</p></div>');
 	});
-
-	
-	for(var i=0; i < array.length; i++) {
-		if(!_.isDeepEqual(array[i], old_array[i])) {
-			// updte the element
-		}
-	}
 
 	$('.js-remove-slide').on('click', function() {
 		$('.add-remove').slickRemove(slideIndex - 1);
