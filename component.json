@@ -1,22 +1,22 @@
 {
-  "name": "components-demo",
-  "repo": "GtSnaker/components-demo",
-  "description": "components a muerte",
-  "version": "0.1.0",
-  "keywords": [],
-  "dependencies": {
-    "components/jquery": "master",
-    "components/underscore": "^1.5.2",
-    "GtSnaker/bootstrap-calendar-ok": "master",
-    "GtSnaker/slick": "master",
-    "GtSnaker/message": "*",
-    "components/jquery": "*"
-  },
-  "development": {},
-  "scripts": [
-    "js/app.js"
-  ],
-  "styles": [
-    "css/app.css"
-  ]
+	"name": "affinaty-components-demo",
+	"repo": "GtSnaker/affinaty-components-demo",
+	"description": "components a muerte",
+	"version": "0.1.0",
+	"keywords": ["affinaty"],
+	"dependencies": {
+		"components/jquery": "master",
+		"components/underscore": "master",
+		"duralog/bootstrap-calendar": "master",
+		"GtSnaker/slick": "master",
+		"GtSnaker/message": "master"
+	},
+	"development": {},
+	"main": "js/app.js",
+	"scripts": [
+		"js/app.js"
+	],
+	"styles": [
+		"css/app.css"
+	]
 }

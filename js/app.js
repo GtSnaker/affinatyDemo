@@ -1,6 +1,7 @@
 //MESSAJE
-require('GtSnaker-bootstrap-calendar-ok')
-require('GtSnaker-message')
+// debugger
+require('bootstrap-calendar')
+require('message')
 
 function rich_confirm(){
 	dhtmlx.confirm("<img src='alert_medium.png'><strong>Need more <a target='blank' href='http://en.wikipedia.org/wiki/Coffee'>coffee!</a></strong><br/><br/> You can use any type of html content here - links, images, etc.");
@@ -10,178 +11,253 @@ function rich_alert(){
 }
 function rich_message(){
 	dhtmlx.message({
-		text:"<img src='alert_small.png'> Need more <a target='blank' href='http://en.wikipedia.org/wiki/Coffee'>coffee!</a><br/><br/> You can use any type of html content here - links, images, etc.",
-		expire:-1
+		text: "<img src='alert_small.png'> Need more <a target='blank' href='http://en.wikipedia.org/wiki/Coffee'>coffee!</a><br/><br/> You can use any type of html content here - links, images, etc.",
+		expire: -1
 	});
 }
 window.rich_message = rich_message;
 window.rich_alert = rich_alert;
 window.rich_confirm = rich_confirm;
 
+// ripped from:
+// http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
+var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+function youtube_parse(url) {
+  var match;
+  if(match = url.match(yt_regex) && match[7].length === 11) {
+    return match[7];
+  } else return null;
+}
+
+var url_regex = /(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+function parse_msg_txt(text) {
+	var v, s;
+	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0])) ) {
+		var url = text.substr(s);
+		var end;
+		if(~(end = url.indexOf(' '))) {
+			// if url has a space, we only want till the the space
+			//end = null;
+			url = url.substr(0, end);
+		}
+
+		if(~v.indexOf('youtube.com')) {
+			// parse for youtube urls
+			console.log("yt:", youtube_parse(url))
+		} else {
+			console.log("unknown media type")
+		}
+	}
+}
+window.parse_msg_txt = parse_msg_txt;
+parse_msg_txt('lkjlkj  http://www.youtube.com/watch?v=7J6VXuEVmio more text');
+
+
 //SLICK
-require('GtSnaker-slick')
+require('slick')
 $(document).ready(function() {
-    for(var i = 0; i < videos.length; i++) {
-        var video = videos[i];
-        $('#videos').append('<div><div class="YTvideos"><iframe src="' + video.src + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>');
-    }
-    $('.single-item').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    });
-    $('.multiple-items').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 3,
-        slidesToScroll: 3
-    });
-    $('.one-time').slick({
-        dots: true,
-        infinite: false,
-        placeholders: false,
-        speed: 300,
-        slidesToShow: 5,
-        touchMove: false,
-        slidesToScroll: 1
-    });
-    $('.uneven').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 4
-    });
-    $('.responsive').slick({
-        dots: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        responsive: [{
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
-                infinite: true,
-                dots: true
-            }
-        }, {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-            }
-        }, {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        }]
-    });
+	var videos = [
+		{src:"http://www.youtube.com/embed/moSFlvxnbgk"},
+		{src:"http://www.youtube.com/embed/1ggPgTNvw_k"},
+		{src:"http://player.vimeo.com/video/92512296"},
+		{src:"http://player.vimeo.com/video/92224516?badge=0"},
+		{src:"https://vine.co/v/MilH1uzQlUK/embed/simple"},
+		{src:"https://vine.co/v/bjHh0zHdgZT/embed/simple"}
+	];
+	var imgs = [
+		{src:"http://lorempixel.com/400/200/abstract/"},
+		{src:"http://lorempixel.com/420/300/abstract/"},
+		{src:"http://lorempixel.com/460/400/abstract/"}
+	];
+	///*
+	for(var i = 0; i < videos.length; i++) {
+		var video = videos[i];
+		$('#videos').append('<div><div class="YTvideos"><iframe src="' + video.src + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>');
+	}
+	//*/
 
-    $('.center').slick({
-        centerMode: true,
-        centerPadding: '60px',
-        slidesToShow: 3,
-        responsive: [{
-            breakpoint: 768,
-            settings: {
-                arrows: false,
-                centerMode: true,
-                centerPadding: '40px',
-                slidesToShow: 3
-            }
-        }, {
-            breakpoint: 480,
-            settings: {
-                arrows: false,
-                centerMode: true,
-                centerPadding: '40px',
-                slidesToShow: 1
-            }
-        }]
-    });
-    $('.lazy').slick({
-        lazyLoad: 'ondemand',
-        slidesToShow: 3,
-        slidesToScroll: 1
-    });
-    $('.autoplay').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000
-    });
+	/*
+	for(var i = 0; i < imgs.length; i++) {
+		var img = imgs[i];
+		$('#videos').append('<div><div class="YTvideos"><img src="' + img.src + '"></img></div></div>');
+	}
+	//*/
+	$('#videos').slick({
+		dots: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 1,
+		slidesToScroll: 1
+	});
+	$('.add-remove').slick({
+		dots: true,
+		slidesToShow: 3,
+		slidesToScroll: 3
+	});
+	var slideIndex = 1;
+	$('.js-add-slide').on('click', function() {
+		slideIndex++;
+		$('.add-remove').slickAdd('<div><h3>' + slideIndex + '</h3></div>');
+	});
 
-    $('.fade').slick({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        fade: true,
-        slide: 'div',
-        cssEase: 'linear'
-    });
+	$('.js-remove-slide').on('click', function() {
+		$('.add-remove').slickRemove(slideIndex - 1);
+		if (slideIndex !== 0){
+			slideIndex--;
+		}
+	});
+	/*
+	$('.multiple-items').slick({
+		dots: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 3,
+		slidesToScroll: 3
+	});
+	$('.one-time').slick({
+		dots: true,
+		infinite: false,
+		placeholders: false,
+		speed: 300,
+		slidesToShow: 5,
+		touchMove: false,
+		slidesToScroll: 1
+	});
+	$('.uneven').slick({
+		dots: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 4,
+		slidesToScroll: 4
+	});
+	$('.responsive').slick({
+		dots: true,
+		infinite: false,
+		speed: 300,
+		slidesToShow: 4,
+		slidesToScroll: 4,
+		responsive: [{
+			breakpoint: 1024,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				infinite: true,
+				dots: true
+			}
+		}, {
+			breakpoint: 600,
+			settings: {
+				slidesToShow: 2,
+				slidesToScroll: 2
+			}
+		}, {
+			breakpoint: 480,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			}
+		}]
+	});
 
-    $('.add-remove').slick({
-        dots: true,
-        slidesToShow: 3,
-        slidesToScroll: 3
-    });
-    var slideIndex = 1;
-    $('.js-add-slide').on('click', function() {
-        slideIndex++;
-        $('.add-remove').slickAdd('<div><h3>' + slideIndex + '</h3></div>');
-    });
+	$('.center').slick({
+		centerMode: true,
+		centerPadding: '60px',
+		slidesToShow: 3,
+		responsive: [{
+			breakpoint: 768,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '40px',
+				slidesToShow: 3
+			}
+		}, {
+			breakpoint: 480,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '40px',
+				slidesToShow: 1
+			}
+		}]
+	});
+	$('.lazy').slick({
+		lazyLoad: 'ondemand',
+		slidesToShow: 3,
+		slidesToScroll: 1
+	});
+	$('.autoplay').slick({
+		dots: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		autoplay: true,
+		autoplaySpeed: 2000
+	});
 
-    $('.js-remove-slide').on('click', function() {
-        $('.add-remove').slickRemove(slideIndex - 1);
-        if (slideIndex !== 0){
-            slideIndex--;
-        } 
-    });
+	$('.fade').slick({
+		dots: true,
+		infinite: true,
+		speed: 500,
+		fade: true,
+		slide: 'div',
+		cssEase: 'linear'
+	});
 
-    $('.filtering').slick({
-        dots: true,
-        slidesToShow: 4,
-        slidesToScroll: 4
-    });
-    var filtered = false;
-    $('.js-filter').on('click', function() {
-        if (filtered === false) {
-            $('.filtering').slickFilter(':even');
-            $(this).text('Unfilter Slides');
-            filtered = true;
-        } else {
-            $('.filtering').slickUnfilter();
-            $(this).text('Filter Slides');
-            filtered = false;
-        }
-    });
+	$('.add-remove').slick({
+		dots: true,
+		slidesToShow: 3,
+		slidesToScroll: 3
+	});
+	var slideIndex = 1;
+	$('.js-add-slide').on('click', function() {
+		slideIndex++;
+		$('.add-remove').slickAdd('<div><h3>' + slideIndex + '</h3></div>');
+	});
 
-    $(window).on('scroll', function() {
-        if ($(window).scrollTop() > 166) {
-            $('.fixed-header').show();
-        } else {
-            $('.fixed-header').hide();
-        }
-    });
+	$('.js-remove-slide').on('click', function() {
+		$('.add-remove').slickRemove(slideIndex - 1);
+		if (slideIndex !== 0){
+			slideIndex--;
+		}
+	});
 
-    $('ul.nav a').on('click', function(event) {
-        event.preventDefault();
-        var targetID = $(this).attr('href');
-        var targetST = $(targetID).offset().top - 48;
-        $('body, html').animate({
-            scrollTop: targetST + 'px'
-        }, 300);
-    });
+	$('.filtering').slick({
+		dots: true,
+		slidesToShow: 4,
+		slidesToScroll: 4
+	});
+	var filtered = false;
+	$('.js-filter').on('click', function() {
+		if (filtered === false) {
+			$('.filtering').slickFilter(':even');
+			$(this).text('Unfilter Slides');
+			filtered = true;
+		} else {
+			$('.filtering').slickUnfilter();
+			$(this).text('Filter Slides');
+			filtered = false;
+		}
+	});
+
+	$(window).on('scroll', function() {
+		if ($(window).scrollTop() > 166) {
+			$('.fixed-header').show();
+		} else {
+			$('.fixed-header').hide();
+		}
+	});
+*/
+
+	$('ul.nav a').on('click', function(event) {
+		event.preventDefault();
+		var targetID = $(this).attr('href');
+		var targetST = $(targetID).offset().top - 48;
+		$('body, html').animate({
+			scrollTop: targetST + 'px'
+		}, 300);
+	});
 
 });
 
@@ -294,7 +370,6 @@ jQuery(document).ready(function($) {
 		}
 	};
 
-	require('bootstrap-calendar-ok');
 	var calendar = $('#calendar').calendar(options);
 
 	$('.btn-group button[data-calendar-nav]').each(function() {

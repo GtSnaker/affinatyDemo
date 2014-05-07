@@ -5,66 +5,21 @@
 
 	<!-- <meta name="description" content="Full view calendar component for twitter bootstrap with year, month, week, day views."> -->
 	<!-- <meta name="keywords" content="jQuery,Bootstrap,Calendar,HTML,CSS,JavaScript,responsive,month,week,year,day"> -->
-	<!-- <meta name="author" content="Serhioromano"> -->
+	<meta name="author" content="affinaty.es">
 	<meta charset="UTF-8">
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="build/build.css">
 </head>
 <body>
+	<form class="form-horizontal" role="form">
+		<textarea class="form-control" rows="3"></textarea>
+	</form>
+	<div id="slick-msg" class="slider add-remove"></div>
 
 <!--SLICK-->
-<script language="javascript"> 
-		window.videos = [
-			{src:"http://www.youtube.com/embed/moSFlvxnbgk"},
-			{src:"http://www.youtube.com/embed/1ggPgTNvw_k"},
-			{src:"http://player.vimeo.com/video/92512296"},
-			{src:"http://player.vimeo.com/video/92224516?badge=0"},
-			{src:"https://vine.co/v/MilH1uzQlUK/embed/simple"},
-			{src:"https://vine.co/v/bjHh0zHdgZT/embed/simple"}
-		];
-</script>
-<section id="features" class="blue">
-			<div class="content">
-				<h2>Features</h2>
-				<ul class="features">
-					<li>Fully responsive. Scales with its container.</li>
-					<li>Separate settings per breakpoint</li>
-					<li>Uses CSS3 when available. Fully functional when not.</li>
-					<li>Swipe enabled. Or disabled, if you prefer.</li>
-					<li>Desktop mouse dragging</li>
-					<li>Infinite looping.</li>
-					<li>Fully accessible with arrow key navigation</li>
-					<li>Add, remove, filter & unfilter slides</li>
-					<li>Autoplay, dots, arrows, callbacks, etc...</li>
-				</ul>
-				<hr id="demos"/>
-				<h2>Single Item</h2>
-
-				<div id="videos" class="slider single-item"></div>
-
-				<pre><code>
-$('.single-item').slick();
-				</code></pre>
-				<hr/>
-				<h2>Multiple Items</h2>
-				<div class="slider multiple-items">
-					<div><h3>1</h3></div>
-					<div><h3>2</h3></div>
-					<div><h3>3</h3></div>
-					<div><h3>4</h3></div>
-					<div><h3>5</h3></div>
-					<div><h3>6</h3></div>
-					<div><h3>7</h3></div>
-					<div><h3>8</h3></div>
-					<div><h3>9</h3></div>
-				</div>
-</div>
-</section>
+<div id="videos" class="slider single-item"></div>
 <!--MESSAJE-->
-<script type="text/javascript">
-	// var rich_message = require('affinatyDemo').rich_message
-	</script>
 
 	<fieldset>
 		<legend>Message</legend>
@@ -183,13 +138,13 @@ $('.single-item').slick();
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		// window.jQuery = require("components~jquery@2.1.0");
-		// window._ = require("components~underscore@1.5.2");
-	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
 	<script type="text/javascript" src="build/build.js"></script>
+	<script type="text/javascript">
+	// nothing...
+	require('affinaty-components-demo')
+	</script>
 
 </div>
 </body>
