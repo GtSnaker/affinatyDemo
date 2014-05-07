@@ -24,7 +24,7 @@ window.rich_confirm = rich_confirm;
 var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 function youtube_parse(url) {
   var match;
-  if(match = url.match(yt_regex) && match[7].length === 11) {
+  if((match = url.match(yt_regex)) && match[7].length === 11) {
     return match[7];
   } else return null;
 }
@@ -32,7 +32,9 @@ function youtube_parse(url) {
 var url_regex = /(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
 function parse_msg_txt(text) {
 	var v, s;
-	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0])) ) {
+	console.log('...', url_regex.exec(text));
+	// debugger;
+	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0]))) {
 		var url = text.substr(s);
 		var end;
 		if(~(end = url.indexOf(' '))) {
@@ -41,7 +43,7 @@ function parse_msg_txt(text) {
 			url = url.substr(0, end);
 		}
 
-		if(~v.indexOf('youtube.com')) {
+		if(~url.indexOf('youtube.com')) {
 			// parse for youtube urls
 			console.log("yt:", youtube_parse(url))
 		} else {
@@ -50,6 +52,7 @@ function parse_msg_txt(text) {
 	}
 }
 window.parse_msg_txt = parse_msg_txt;
+window.youtube_parse = youtube_parse;
 parse_msg_txt('lkjlkj  http://www.youtube.com/watch?v=7J6VXuEVmio more text');
 
 
@@ -69,14 +72,24 @@ $(document).ready(function() {
 		{src:"http://lorempixel.com/420/300/abstract/"},
 		{src:"http://lorempixel.com/460/400/abstract/"}
 	];
-	///*
+	/*
 	for(var i = 0; i < videos.length; i++) {
 		var video = videos[i];
 		$('#videos').append('<div><div class="YTvideos"><iframe src="' + video.src + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>');
 	}
 	//*/
 
-	/*
+function update_slick(array) {
+	// ... everything you need to do, here
+	old_array = array;
+}
+
+	var old_array = [];
+	$('textarea.form-control').bind("keyup", function(e) {
+		console.log("e", update_slick(parse_msg_txt(e.target.value)));
+	})
+
+	///*
 	for(var i = 0; i < imgs.length; i++) {
 		var img = imgs[i];
 		$('#videos').append('<div><div class="YTvideos"><img src="' + img.src + '"></img></div></div>');
@@ -97,8 +110,15 @@ $(document).ready(function() {
 	var slideIndex = 1;
 	$('.js-add-slide').on('click', function() {
 		slideIndex++;
-		$('.add-remove').slickAdd('<div><h3>' + slideIndex + '</h3></div>');
+		$('.add-remove').slickAdd('<div><p>' + texto + '</p></div>');
 	});
+
+	
+	for(var i=0; i < array.length; i++) {
+		if(!_.isDeepEqual(array[i], old_array[i])) {
+			// updte the element
+		}
+	}
 
 	$('.js-remove-slide').on('click', function() {
 		$('.add-remove').slickRemove(slideIndex - 1);

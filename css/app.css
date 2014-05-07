@@ -1,8 +1,11 @@
 /* Vídeos */
+body {
+  background: #A39BFF;
+}
 #videos {
     /*position: center;*/
     height: 350px;
-    width: 700px;
+    width: 500px;
     /*overflow: hidden;*/
 }
 
