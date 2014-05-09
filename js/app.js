@@ -47,7 +47,17 @@ function vine_parse(url) {
 var slick_count = 0;
 function slick_add(el, html, c) {
 	if(typeof c === 'number') {
-		el.slickAdd(html, c, true);
+		var addBefore = true
+		if(c === el[0].slick.slideCount) {
+			addBefore = false;
+			if(c > 0) {
+				c--;
+			} else {
+				c = void(8);
+			}
+		}
+
+		el.slickAdd(html, c, addBefore);
 	} else {
 		el.slickAdd(html);
 	}
