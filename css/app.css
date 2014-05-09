@@ -8,6 +8,10 @@ body {
     width: 500px;
     /*overflow: hidden;*/
 }
+.slick-slide {
+  word-wrap:break-word;
+  max-height: 100px;
+}
 
 /*
 #videos iframe,

@@ -21,14 +21,31 @@ window.rich_confirm = rich_confirm;
 
 // ripped from:
 // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
+var vimeo_regex = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
+function vimeo_parse(url) {
+  var match;
+  if((match = url.match(vimeo_regex)) && typeof match[3] === 'string') {
+    return match[3];
+  } else return null;
+}
 var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-
 function youtube_parse(url) {
   var match;
   if((match = url.match(yt_regex)) && match[7].length === 11) {
     return match[7];
   } else return null;
 }
+
+var slick_count = 0;
+function slick_add(el, html, c) {
+	if(typeof c === 'number') {
+		el.slickAdd(html, c, true);
+	} else {
+		el.slickAdd(html);
+	}
+	slick_count++;
+}
+
 
 var url_regex = /(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
 function parse_msg_txt(text, el) {
@@ -52,28 +69,51 @@ function parse_msg_txt(text, el) {
 		if((newText = text.substr(0, s-1).trim()).length > 0) {
 			// el.slickRemove(array.length);
 			// array.push(newText);
-			el.slickAdd('<div><p>'+newText+'</p></div>');
+			slick_add(el, '<div><p>'+newText+'</p></div>');
 		}
 
 		var id;
 		if(~url.indexOf('youtube.com')) {
 			// parse for youtube urls
-			console.log("yt:", id = youtube_parse(url));
+			id = youtube_parse(url);
 			// array.push({youtube: id});
-			el.slickAdd('<div><img src="http://img.youtube.com/vi/'+id+'/mqdefault.jpg"/></div>');
+			slick_add(el, '<div><img src="http://img.youtube.com/vi/'+id+'/mqdefault.jpg"/></div>');
+		} else if(~url.indexOf('vimeo.com')) {
+			id = vimeo_parse(url);
+			console.log("loading at", slick_count)
+			var update_vimeo = function(c) {
+				$.ajax("http://vimeo.com/api/v2/video/"+id+".json", {
+					complete: function(e) {
+						console.log("remove:", c)
+						el.slickRemove(c);
+						slick_add(el, '<div><img src="'+e.responseJSON[0].thumbnail_large+'"/></div>', c);
+					}
+				});
+			};
+
+			update_vimeo(slick_count);
+			// debugger
+			slick_add(el, '<div>loading...</div>');
+			// array.push({vimeo: id});
+			//slick_add(el, '<div>vimeo: '+id+'</div>');
 		} else {
 			// array.push({url: url});
-			el.slickAdd('<div><p>url: '+url+'</p></div>');
+			if(url.substr(-4) === '.jpg') {
+				slick_add(el, '<div><img src="'+url+'" /></div>');
+			} else {
+				slick_add(el, '<div><p>url: '+url+'</p></div>');
+			}
 		}
 
-		if((id = text.substr(s+end).trim()).length > 0) {
+		// debugger
+		if(~end && (id = text.substr(s+end).trim()).length > 0) {
 			parse_msg_txt(id, el);
 		}
 		// array.push();
 	} else if((text = text.trim()).length > 0) {
 		// array.push(text.trim());
-		// el.slickAdd('<p>'+id+'</p>');
-		el.slickAdd('<div><p>'+text+'</p></div>');
+		// slick_add(el, '<p>'+id+'</p>');
+		slick_add(el, '<div><p>'+text+'</p></div>');
 	}
 
 	// if(array[0].length) {
@@ -126,14 +166,15 @@ function update_slick(text) {
 	// ... everything you need to do, here
 	var el = $('#videos').slickRemove();
 	while(el.slickRemove(0)[0].slick.slideCount) {}
+	slick_count = 0;
 	parse_msg_txt(text.trim(), el);
 
 }
 
 var _ = require('underscore');
-	$('textarea.form-control').bind("keyup", _.debounce(function(e) {
+	$('textarea.form-control').bind("keyup", function(e) {
 		update_slick(e.target.value);
-	}, 2000, {trailing: true}));
+	});
 
 	// for(var i=0; i < array.length; i++) {
 	// 	if(!_.isDeepEqual(array[i], old_array[i])) {
@@ -151,8 +192,8 @@ var _ = require('underscore');
 		dots: true,
 		infinite: true,
 		speed: 300,
-		slidesToShow: 1,
-		slidesToScroll: 1
+		slidesToShow: 3,
+		slidesToScroll: 3
 	});
 	$('.add-remove').slick({
 		dots: true,
