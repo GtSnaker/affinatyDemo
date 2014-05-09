@@ -53,8 +53,6 @@ function parse_msg_txt(text, el) {
 	var newText;
 	var array = [];
 
-	//console.log('...', url_regex.exec(text));
-	// debugger;
 	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0]))) {
 		var url = text.substr(s);
 		var end;
@@ -92,7 +90,6 @@ function parse_msg_txt(text, el) {
 			};
 
 			update_vimeo(slick_count);
-			// debugger
 			slick_add(el, '<div>loading...</div>');
 			// array.push({vimeo: id});
 			//slick_add(el, '<div>vimeo: '+id+'</div>');
@@ -105,7 +102,6 @@ function parse_msg_txt(text, el) {
 			}
 		}
 
-		// debugger
 		if(~end && (id = text.substr(s+end).trim()).length > 0) {
 			parse_msg_txt(id, el);
 		}
