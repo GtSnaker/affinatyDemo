@@ -32,6 +32,7 @@ function youtube_parse(url) {
 
 var url_regex = /(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
 function parse_msg_txt(text, el) {
+	//debugger
 	var v, s;
 	var newText;
 	var array = [];
@@ -66,7 +67,8 @@ function parse_msg_txt(text, el) {
 			el.slickAdd('<div><p>url: '+url+'</p></div>');
 		}
 
-		if((id = text.substr(s+end).trim()).length > 0) {
+		if(~end && (id = text.substr(s+end).trim()).length > 0) {
+			//debugger
 			parse_msg_txt(id, el);
 		}
 		// array.push();
