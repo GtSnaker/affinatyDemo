@@ -36,6 +36,14 @@ function youtube_parse(url) {
   } else return null;
 }
 
+var vine_regex = /^http(?:s?):\/\/(?:www\.)?vine\.co\/v\/([a-zA-Z0-9]{1,13})$/;
+function vine_parse(url) {
+  var match;
+  if((match = url.match(vine_regex)) && match[1].length === 11) {
+    return match[1];
+  } else return null;
+}
+
 var slick_count = 0;
 function slick_add(el, html, c) {
 	if(typeof c === 'number') {
@@ -85,17 +93,27 @@ function parse_msg_txt(text, el) {
 						console.log("remove:", c)
 						el.slickRemove(c);
 						slick_add(el, '<div><img src="'+e.responseJSON[0].thumbnail_large+'"/></div>', c);
+						slick_add(el, ' ');
 					}
 				});
 			};
-
 			update_vimeo(slick_count);
 			slick_add(el, '<div>loading...</div>');
 			// array.push({vimeo: id});
 			//slick_add(el, '<div>vimeo: '+id+'</div>');
+		} else if (~url.indexOf('vine.co')) {
+			id = vine_parse(url);
+			console.log(id);
+			slick_add(el, '<div><img src="http://www.rocketfishltd.co.uk/blog/wp-content/uploads/2014/02/vine-logo.jpg" /></div>');		
 		} else {
 			// array.push({url: url});
 			if(url.substr(-4) === '.jpg') {
+				slick_add(el, '<div><img src="'+url+'" /></div>');
+			} 
+			else if (url.substr(-4) === '.png'){
+				slick_add(el, '<div><img src="'+url+'" /></div>');
+			} 
+			else if (url.substr(-4) === '.gif'){
 				slick_add(el, '<div><img src="'+url+'" /></div>');
 			} else {
 				slick_add(el, '<div><p>url: '+url+'</p></div>');
