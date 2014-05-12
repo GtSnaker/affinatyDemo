@@ -24,6 +24,21 @@ body {
     height: 100%;
 }
 
+#theOne {
+    width: 400px;
+    height: 350px;
+}
+#theOne iframe,
+#theOne object,
+#theOne embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    width: 400px;
+    height: 350px;
+}
 
 /*MESSAGE*/
 .dhtmlx_message_area{

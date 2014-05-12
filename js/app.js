@@ -56,7 +56,6 @@ function slick_add(el, html, c) {
 				c = void(8);
 			}
 		}
-
 		el.slickAdd(html, c, addBefore);
 	} else {
 		el.slickAdd(html);
@@ -85,7 +84,7 @@ function parse_msg_txt(text, el) {
 		if((newText = text.substr(0, s-1).trim()).length > 0) {
 			// el.slickRemove(array.length);
 			// array.push(newText);
-			slick_add(el, '<div><p>'+newText+'</p></div>');
+			//slick_add(el, '<div><p>'+newText+'</p></div>');
 		}
 
 		var id;
@@ -137,7 +136,7 @@ function parse_msg_txt(text, el) {
 	} else if((text = text.trim()).length > 0) {
 		// array.push(text.trim());
 		// slick_add(el, '<p>'+id+'</p>');
-		slick_add(el, '<div><p>'+text+'</p></div>');
+		//slick_add(el, '<div><p>'+text+'</p></div>');
 	}
 
 	// if(array[0].length) {
@@ -188,11 +187,15 @@ $(document).ready(function() {
 
 function update_slick(text) {
 	// ... everything you need to do, here
+	var la = $('#theOne').slickRemove();
+	while(la.slickRemove(0)[0].slick.slideCount) {}
+	slick_count = 0;
+	parse_msg_txt(text.trim(), la);
+
 	var el = $('#videos').slickRemove();
 	while(el.slickRemove(0)[0].slick.slideCount) {}
 	slick_count = 0;
 	parse_msg_txt(text.trim(), el);
-
 }
 
 var _ = require('underscore');
@@ -211,13 +214,31 @@ var _ = require('underscore');
 		var img = imgs[i];
 		$('#videos').append('<div><div class="YTvideos"><img src="' + img.src + '"></img></div></div>');
 	}
+
+	for(var i = 0; i < imgs.length; i++) {
+		var img = imgs[i];
+		$('#theOne').append('<div><div class="YTvideos"><img src="' + img.src + '"></img></div></div>');
+	}
 	//*/
 	$('#videos').slick({
 		dots: true,
 		infinite: true,
 		speed: 300,
-		slidesToShow: 3,
-		slidesToScroll: 3
+		slidesToShow: 5,
+		slidesToScroll: 1
+	});
+	$('#videos').bind("click", function (event) {
+		var lala = $(event.target).parent().index();
+		if (typeof lala === 'number') {
+		$('#theOne').slickGoTo(lala);
+		}
+	})
+	$('#theOne').slick({
+		dots: false,
+		infinite: false,
+		speed: 300,
+		slidesToShow: 1,
+		slidesToScroll: 1
 	});
 	$('.add-remove').slick({
 		dots: true,
