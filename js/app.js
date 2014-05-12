@@ -23,25 +23,25 @@ window.rich_confirm = rich_confirm;
 // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
 var vimeo_regex = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
 function vimeo_parse(url) {
-  var match;
-  if((match = url.match(vimeo_regex)) && typeof match[3] === 'string') {
-    return match[3];
-  } else return null;
+	var match;
+	if((match = url.match(vimeo_regex)) && typeof match[3] === 'string') {
+		return match[3];
+	} else return null;
 }
 var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 function youtube_parse(url) {
-  var match;
-  if((match = url.match(yt_regex)) && match[7].length === 11) {
-    return match[7];
-  } else return null;
+	var match;
+	if((match = url.match(yt_regex)) && match[7].length === 11) {
+		return match[7];
+	} else return null;
 }
 
 var vine_regex = /^http(?:s?):\/\/(?:www\.)?vine\.co\/v\/([a-zA-Z0-9]{1,13})$/;
 function vine_parse(url) {
-  var match;
-  if((match = url.match(vine_regex)) && match[1].length === 11) {
-    return match[1];
-  } else return null;
+	var match;
+	if((match = url.match(vine_regex)) && match[1].length === 11) {
+		return match[1];
+	} else return null;
 }
 
 var slick_count = 0;
@@ -98,17 +98,51 @@ function parse_msg_txt(text, el) {
 					cE('img', {
 						src: 'http://img.youtube.com/vi/'+id+'/mqdefault.jpg',
 						onclick: (el[0].id === 'theOne' ? function(event) {
-							rC(vid_parent,
-								cE('div', {c: "YTvideos"},
-									cE('iframe', {
-										src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
-										frameborder: 0,
-										webkitallowfullscreen: true,
-										mozallowfullscreen: true,
-										allowfullscreen: true
-									})
+							// rC(vid_parent,
+							// 	cE('div', {c: "YTvideos"},
+							// 		cE('iframe', {
+							// 			src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
+							// 			frameborder: 0,
+							// 			webkitallowfullscreen: true,
+							// 			mozallowfullscreen: true,
+							// 			allowfullscreen: true
+							// 		})
+							// 	)
+							// );
+
+							var modal;
+							// aC(null,
+							$(modal = cE('div', {c: "modal fade", id:"myModal", tabindex:"-1", role:"dialog", aria: {labelledby:"myModalLabel", hidden:"true"}},
+								cE('div', {c: "modal-dialog"},
+									cE('div', {c: "modal-content"},
+										cE('div', {c: "modal-header"},
+											cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
+											cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+										),
+										cE('div', {c: "modal-body"},
+											cE('div', {c: "YTvideos"},
+												cE('iframe', {
+													src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
+													frameborder: 0,
+													webkitallowfullscreen: true,
+													mozallowfullscreen: true,
+													allowfullscreen: true
+												})
+											)
+										),
+										cE('div', {c: "modal-footer"},
+											cE('button', {type:"button", c:"btn btn-default", data: {dismiss:"modal"}}, "Close"),
+											cE('button', {type:"button", c:"btn btn-primary"}, "Favorite me!")
+										)
+									)
 								)
-							)
+							)).modal({
+								onremove: null
+							});
+							$(modal).on('hidden.bs.modal', function (e) {
+								// dumb hack
+								rC(modal);
+							})
 						} : null)
 					})
 				)
