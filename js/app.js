@@ -97,7 +97,7 @@ function parse_msg_txt(text, el) {
 				vid_parent = cE('div', {data: {id:id}},
 					cE('img', {
 						src: 'http://img.youtube.com/vi/'+id+'/mqdefault.jpg',
-						onclick: function(event) {
+						onclick: (el[0].id === 'theOne' ? function(event) {
 							rC(vid_parent,
 								cE('div', {c: "YTvideos"},
 									cE('iframe', {
@@ -109,7 +109,7 @@ function parse_msg_txt(text, el) {
 									})
 								)
 							)
-						}
+						} : null)
 					})
 				)
 			);
