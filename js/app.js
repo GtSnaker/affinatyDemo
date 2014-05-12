@@ -92,7 +92,28 @@ function parse_msg_txt(text, el) {
 			// parse for youtube urls
 			id = youtube_parse(url);
 			// array.push({youtube: id});
-			slick_add(el, '<div><img src="http://img.youtube.com/vi/'+id+'/mqdefault.jpg"/></div>');
+			var vid_parent;
+			slick_add(el,
+				vid_parent = cE('div', {data: {id:id}},
+					cE('img', {
+						src: 'http://img.youtube.com/vi/'+id+'/mqdefault.jpg',
+						onclick: function(event) {
+							rC(vid_parent,
+								cE('div', {c: "YTvideos"},
+									cE('iframe', {
+										src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
+										frameborder: 0,
+										webkitallowfullscreen: true,
+										mozallowfullscreen: true,
+										allowfullscreen: true
+									})
+								)
+							)
+						}
+					})
+				)
+			);
+			//slick_add(el, '<div><img src="http://img.youtube.com/vi/'+id+'/mqdefault.jpg"/></div>');
 		} else if(~url.indexOf('vimeo.com')) {
 			id = vimeo_parse(url);
 			console.log("loading at", slick_count)
