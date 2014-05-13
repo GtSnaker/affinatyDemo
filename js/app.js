@@ -98,17 +98,6 @@ function parse_msg_txt(text, el) {
 					cE('img', {
 						src: 'http://img.youtube.com/vi/'+id+'/mqdefault.jpg',
 						onclick: (el[0].id === 'theOne' ? function(event) {
-							// rC(vid_parent,
-							// 	cE('div', {c: "YTvideos"},
-							// 		cE('iframe', {
-							// 			src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
-							// 			frameborder: 0,
-							// 			webkitallowfullscreen: true,
-							// 			mozallowfullscreen: true,
-							// 			allowfullscreen: true
-							// 		})
-							// 	)
-							// );
 
 							var modal;
 							// aC(null,
@@ -165,10 +154,55 @@ function parse_msg_txt(text, el) {
 			slick_add(el, '<div>loading...</div>');
 			// array.push({vimeo: id});
 			//slick_add(el, '<div>vimeo: '+id+'</div>');
+
 		} else if (~url.indexOf('vine.co')) {
 			id = vine_parse(url);
 			console.log(id);
-			slick_add(el, '<div><img src="http://www.rocketfishltd.co.uk/blog/wp-content/uploads/2014/02/vine-logo.jpg" /></div>');		
+			var vid_parent;
+			slick_add(el,
+				vid_parent = cE('div', {data: {id:id}},
+					cE('img', {
+						src: 'https://pbs.twimg.com/profile_images/3578238864/50d7e05aa6fe5d477e48a63047e38ce7_400x400.png',
+						onclick: (el[0].id === 'theOne' ? function(event) {
+
+							var modal;
+							// aC(null,
+							$(modal = cE('div', {c: "modal fade", id:"myModal", tabindex:"-1", role:"dialog", aria: {labelledby:"myModalLabel", hidden:"true"}},
+								cE('div', {c: "modal-dialog"},
+									cE('div', {c: "modal-content"},
+										cE('div', {c: "modal-header"},
+											cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
+											cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+										),
+										cE('div', {c: "modal-body"},
+											cE('div', {c: "YTvideos"},
+												cE('iframe', {
+													src:'https://vine.co/v/'+vid_parent.dataset.id+'/embed/simple',
+													frameborder: 0,
+													webkitallowfullscreen: true,
+													mozallowfullscreen: true,
+													allowfullscreen: true
+												})
+											)
+										),
+										cE('div', {c: "modal-footer"},
+											cE('button', {type:"button", c:"btn btn-default", data: {dismiss:"modal"}}, "Close"),
+											cE('button', {type:"button", c:"btn btn-primary"}, "Favorite me!")
+										)
+									)
+								)
+							)).modal({
+								onremove: null
+							});
+							$(modal).on('hidden.bs.modal', function (e) {
+								// dumb hack
+								rC(modal);
+							})
+						} : null)
+					})
+				)
+			);
+			//'<div><img src="http://www.rocketfishltd.co.uk/blog/wp-content/uploads/2014/02/vine-logo.jpg" /></div>');		
 		} else {
 			// array.push({url: url});
 			if(url.substr(-4) === '.jpg') {
