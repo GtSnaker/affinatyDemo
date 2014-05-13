@@ -98,7 +98,6 @@ function parse_msg_txt(text, el) {
 					cE('img', {
 						src: 'http://img.youtube.com/vi/'+id+'/mqdefault.jpg',
 						onclick: (el[0].id === 'theOne' ? function(event) {
-
 							var modal;
 							// aC(null,
 							$(modal = cE('div', {c: "modal fade", id:"myModal", tabindex:"-1", role:"dialog", aria: {labelledby:"myModalLabel", hidden:"true"}},
@@ -145,7 +144,48 @@ function parse_msg_txt(text, el) {
 					complete: function(e) {
 						console.log("remove:", c)
 						el.slickRemove(c);
-						slick_add(el, '<div><img src="'+e.responseJSON[0].thumbnail_large+'"/></div>', c);
+						slick_add(el, vid_parent = cE('div', {data: {id:id}},
+							cE('img', {
+								src: e.responseJSON[0].thumbnail_large,
+								onclick: (el[0].id === 'theOne' ? function(event) {
+									var modal;
+									// aC(null,
+									$(modal = cE('div', {c: "modal fade", id:"myModal", tabindex:"-1", role:"dialog", aria: {labelledby:"myModalLabel", hidden:"true"}},
+										cE('div', {c: "modal-dialog"},
+											cE('div', {c: "modal-content"},
+												cE('div', {c: "modal-header"},
+													cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
+													cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+												),
+												cE('div', {c: "modal-body"},
+													cE('div', {c: "YTvideos"},
+														cE('iframe', {
+															src:'http://player.vimeo.com/video/'+vid_parent.dataset.id,
+															frameborder: 0,
+															webkitallowfullscreen: true,
+															mozallowfullscreen: true,
+															allowfullscreen: true
+														})
+													)
+												),
+												cE('div', {c: "modal-footer"},
+													cE('button', {type:"button", c:"btn btn-default", data: {dismiss:"modal"}}, "Close"),
+													cE('button', {type:"button", c:"btn btn-primary"}, "Favorite me!")
+												)
+											)
+										)
+									)).modal({
+										onremove: null
+									});
+									$(modal).on('hidden.bs.modal', function (e) {
+										// dumb hack
+										rC(modal);
+									})
+								} : null)
+							})
+						)
+						);
+						//slick_add(el, '<div><img src="'+e.responseJSON[0].thumbnail_large+'"/></div>', c);
 						slick_add(el, ' ');
 					}
 				});
