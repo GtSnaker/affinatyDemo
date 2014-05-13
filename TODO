@@ -1,10 +1,31 @@
-TODO
-1. parse the text in the text box...
-example "some text http://www.youtube.com/watch?v=B_3Ra_Qx-p8 otro texto"
-should return an array [
-	"some text",
-	{ youtube: "B_3Ra_Qx-p8" }, // http://img.youtube.com/vi/..id../mqdefault.jpg
-	"otro texto"
-]
+TODO para la demo de comentarios (normales)
+===========================================
 
-2. crear cada array in un slick gallery example: "slider add-remove"
+1. cuando haces clic in una foto, se expande con el popup modal para verla en pantalla completa
+2. cuando haces clic in un video de vimeo, vine, etc, lo hace igual que youtube
+3. en vez de usar un iframe para los videos de youtube (con embed content), usa el chromeless player. un ejemplo: https://github.com/fredsterss/embed-youtube
+3a. later, this same api will be used to create the keyframes and stuff, so make sure everything is working... sometimes youtube se peta al flash o al html5-video, entonces es importante que cargando videos y moviendolos, no crea errores. (NOTE for the future, here... ignore)
+3b. como vine, cuando un video esta en vista de la ventana, empieza automaticamente, precisisamente en el segundo especificado, si sea posible (youtube: si, vine y vimeo, no lo sé...)
+4. meter la libreria de quill para dar forma al texto.
+api: http://quilljs.com/docs/editor/api/
+ejemplos: http://quilljs.com/examples/
+fuente: https://github.com/quilljs/quill
+
+TODO para la demo de comentarios (de multimedia)
+================================================
+(TODO - meta todo item, hehehe)
+
+TODO para la demo de comentarios (de modo texto)
+================================================
+
+1. primero, necesitamos un elemento que tenga scroll.
+2. una vez que ya lo tengamos, quiero que miren a esta demo: http://emisfera.github.io/Splitchar.js/
+
+la fuente esta aqui:
+https://github.com/emisfera/Splitchar.js/tree/gh-pages
+
+lo que van a ver es que él usa "jquery-onepage-scroll" para crear ese efecto de paginas
+http://www.thepetedesign.com/demos/onepage_scroll_demo.html
+https://github.com/peachananr/onepage-scroll
+
+entonces, lo que vamos a hacer es similar. vamos a coger los slides de la galeria
