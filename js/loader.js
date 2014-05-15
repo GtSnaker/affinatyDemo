@@ -137,6 +137,8 @@ function cE(type, opts) {
 				}
 				break;
 				// I forget why I have this here... it's for bootstrap??
+				case "allowfullscreen":
+					e.setAttribute('allowFullScreen', '')
 				case "aria":
 				for(var k in v) {
 					e.setAttribute('aria-'+k, v[k]);

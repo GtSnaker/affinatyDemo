@@ -3,6 +3,8 @@
 require('bootstrap-calendar')
 require('message')
 
+var slick_array = [];
+
 function rich_confirm(){
 	dhtmlx.confirm("<img src='alert_medium.png'><strong>Need more <a target='blank' href='http://en.wikipedia.org/wiki/Coffee'>coffee!</a></strong><br/><br/> You can use any type of html content here - links, images, etc.");
 }
@@ -80,7 +82,7 @@ function parse_msg_txt(text, el) {
 			url = url.substr(0, end);
 		}
 
-		console.log(newText);
+		//console.log(newText);
 		if((newText = text.substr(0, s-1).trim()).length > 0) {
 			// el.slickRemove(array.length);
 			// array.push(newText);
@@ -92,6 +94,13 @@ function parse_msg_txt(text, el) {
 			// parse for youtube urls
 			id = youtube_parse(url);
 			// array.push({youtube: id});
+			var video_name;
+			$.ajax("http://gdata.youtube.com/feeds/api/videos/"+id+"?v=2&alt=json", {
+				complete: function(e) {
+					video_name = e.responseJSON.entry.title.$t;
+					//console.log(video_name);
+				}
+			});
 			var vid_parent;
 			slick_add(el,
 				vid_parent = cE('div', {data: {id:id}},
@@ -105,13 +114,13 @@ function parse_msg_txt(text, el) {
 									cE('div', {c: "modal-content"},
 										cE('div', {c: "modal-header"},
 											cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
-											cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+											cE('h4', {c:"modal-title", id:"myModalLabel"}, video_name)
 										),
 										cE('div', {c: "modal-body"},
 											cE('div', {c: "YTvideos"},
 												cE('iframe', {
 													src:'http://www.youtube.com/embed/'+vid_parent.dataset.id,
-													frameborder: 0,
+													frameborder: 10,
 													webkitallowfullscreen: true,
 													mozallowfullscreen: true,
 													allowfullscreen: true
@@ -142,11 +151,12 @@ function parse_msg_txt(text, el) {
 			var update_vimeo = function(c) {
 				$.ajax("http://vimeo.com/api/v2/video/"+id+".json", {
 					complete: function(e) {
+						var video_info = e.responseJSON[0];
 						console.log("remove:", c)
 						el.slickRemove(c);
 						slick_add(el, vid_parent = cE('div', {data: {id:id}},
 							cE('img', {
-								src: e.responseJSON[0].thumbnail_large,
+								src: video_info.thumbnail_large,
 								onclick: (el[0].id === 'theOne' ? function(event) {
 									var modal;
 									// aC(null,
@@ -155,7 +165,7 @@ function parse_msg_txt(text, el) {
 											cE('div', {c: "modal-content"},
 												cE('div', {c: "modal-header"},
 													cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
-													cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+													cE('h4', {c:"modal-title", id:"myModalLabel"}, video_info.title)
 												),
 												cE('div', {c: "modal-body"},
 													cE('div', {c: "YTvideos"},
@@ -197,14 +207,25 @@ function parse_msg_txt(text, el) {
 
 		} else if (~url.indexOf('vine.co')) {
 			id = vine_parse(url);
-			console.log(id);
+			//console.log(id);
+
+			var video_name;
+			// $.ajax("http://gdata.vine.com/feeds/api/videos/"+id+"?v=2&alt=json", {
+			// 	complete: function(e) {
+			// 		debugger
+			// 		video_name = e.responseJSON.entry.title.$t;
+			// 		console.log(video_name);
+			// 	}
+			// });
+
 			var vid_parent;
+
 			slick_add(el,
 				vid_parent = cE('div', {data: {id:id}},
 					cE('img', {
 						src: 'https://pbs.twimg.com/profile_images/3578238864/50d7e05aa6fe5d477e48a63047e38ce7_400x400.png',
 						onclick: (el[0].id === 'theOne' ? function(event) {
-
+							var iframe;
 							var modal;
 							// aC(null,
 							$(modal = cE('div', {c: "modal fade", id:"myModal", tabindex:"-1", role:"dialog", aria: {labelledby:"myModalLabel", hidden:"true"}},
@@ -212,11 +233,11 @@ function parse_msg_txt(text, el) {
 									cE('div', {c: "modal-content"},
 										cE('div', {c: "modal-header"},
 											cE('button', {type:"button", c:"close", data: {dismiss:"modal"}, aria: {hidden:"true"}, html: "&times;"}),
-											cE('h4', {c:"modal-title", id:"myModalLabel"}, "Modal title")
+											cE('h4', {c:"modal-title", id:"myModalLabel"}, " ")
 										),
 										cE('div', {c: "modal-body"},
 											cE('div', {c: "YTvideos"},
-												cE('iframe', {
+												iframe = cE('iframe', {										
 													src:'https://vine.co/v/'+vid_parent.dataset.id+'/embed/simple',
 													frameborder: 0,
 													webkitallowfullscreen: true,
@@ -245,16 +266,150 @@ function parse_msg_txt(text, el) {
 			//'<div><img src="http://www.rocketfishltd.co.uk/blog/wp-content/uploads/2014/02/vine-logo.jpg" /></div>');		
 		} else {
 			// array.push({url: url});
-			if(url.substr(-4) === '.jpg') {
-				slick_add(el, '<div><img src="'+url+'" /></div>');
-			} 
-			else if (url.substr(-4) === '.png'){
-				slick_add(el, '<div><img src="'+url+'" /></div>');
-			} 
-			else if (url.substr(-4) === '.gif'){
-				slick_add(el, '<div><img src="'+url+'" /></div>');
-			} else {
-				slick_add(el, '<div><p>url: '+url+'</p></div>');
+			var n = url.lastIndexOf('.');
+			var normal_url = true;
+			if(~n){
+				switch(url.substr(n).toLowerCase()){
+					case '.jpg':
+					case '.bmp':
+					case '.cgm':
+					case '.g3':
+					case '.gif':
+					case '.ief':
+					case '.jpeg':
+					case '.ktx':
+					case '.png':
+					case '.btif':
+					case '.sgi':
+					case '.svg':
+					case '.tiff':
+					case '.psd':
+					case '.uvi':
+					case '.sub':
+					case '.djvu':
+					case '.dwg':
+					case '.dxf':
+					case '.fbs':
+					case '.fpx':
+					case '.fst':
+					case '.mmr':
+					case '.rlc':
+					case '.mdi':
+					case '.wdp':
+					case '.npx':
+					case '.wbmp':
+					case '.xif':
+					case '.webp':
+					case '.3ds':
+					case '.ras':
+					case '.cmx':
+					case '.fh':
+					case '.ico':
+					case '.sid':
+					case '.pcx':
+					case '.pic':
+					case '.pnm':
+					case '.pbm':
+					case '.pgm':
+					case '.ppm':
+					case '.rgb':
+					case '.tga':
+					case '.xbm':
+					case '.xpm':
+					case '.xwd':
+						slick_add(el, '<div><img src="'+url+'" /></div>');
+						normal_url = false;
+						break
+					case '.adp':
+					case '.au':
+					case '.mid':
+					case '.mp4a':
+					case '.mpga':
+					case '.oga':
+					case '.s3m':
+					case '.sil':
+					case '.uva':
+					case '.eol':
+					case '.dra':
+					case '.dts':
+					case '.dtshd':
+					case '.lvp':
+					case '.pya':
+					case '.rip':
+					case '.weba':
+					case '.aac':
+					case '.aif':
+					case '.caf':
+					case '.flac':
+					case '.mka':
+					case '.m3u':
+					case '.wax':
+					case '.wma':
+					case '.ram':
+					case '.rmp':
+					case '.wav':
+					case '.xm':
+						slick_add(el, '<div><audio src="'+url+'" controls preload/></div>');
+						normal_url = false;
+						break
+					case '.3gp':
+					case '.3g2':
+					case '.h261':
+					case '.h263':
+					case '.h264':
+					case '.jpgv':
+					case '.jpm':
+					case '.mj2':
+					case '.mp4':
+					case '.mpeg':
+					case '.ogv':
+					case '.qt':
+					case '.uvh':
+					case '.uvm':
+					case '.uvp':
+					case '.uvs':
+					case '.uvv':
+					case '.dvb':
+					case '.fvt':
+					case '.mxu':
+					case '.pyv':
+					case '.uvu':
+					case '.viv':
+					case '.webm':
+					case '.f4v':
+					case '.fli':
+					case '.flv':
+					case '.m4v':
+					case '.mkv':
+					case '.mng':
+					case '.asf':
+					case '.vob':
+					case '.wm':
+					case '.wmv':
+					case '.wmx':
+					case '.wvx':
+					case '.avi':
+					case '.movie':
+					case '.smv':
+						slick_add(el, '<div><video src=" '+url+' " width="320" height="200" controls preload></video>></div>');
+						normal_url = false;
+						break
+				}
+			}
+			// if(url.substr(-4) === '.jpg') {
+			// 	slick_add(el, '<div><img src="'+url+'" /></div>');
+			// } 
+			// else if (url.substr(-4) === '.png'){
+			// 	slick_add(el, '<div><img src="'+url+'" /></div>');
+			// } 
+			// else if (url.substr(-4) === '.gif'){
+			// 	slick_add(el, '<div><img src="'+url+'" /></div>');
+			// }
+			// else if (url.substr(-4) === '.JPG'){
+			// 	slick_add(el, '<div><img src="'+url+'" /></div>');
+			// }
+			if(normal_url) {
+				slick_add(el, '<div> <a href="'+(~url.indexOf('://') ? url : 'http://'+url)+'"> <p>'+url+'</p> </a> </div>');
 			}
 		}
 
@@ -314,11 +469,12 @@ $(document).ready(function() {
 	//*/
 
 
-function update_slick(text) {
 	// ... everything you need to do, here
+function update_slick(text) {	
 	var la = $('#theOne').slickRemove();
 	while(la.slickRemove(0)[0].slick.slideCount) {}
 	slick_count = 0;
+	
 	parse_msg_txt(text.trim(), la);
 
 	var el = $('#videos').slickRemove();
@@ -327,9 +483,13 @@ function update_slick(text) {
 	parse_msg_txt(text.trim(), el);
 }
 
+var updater;
 var _ = require('underscore');
-	$('textarea.form-control').bind("keyup", function(e) {
-		update_slick(e.target.value);
+	$('textarea.form-control').bind("keyup", function(e) {		
+		clearTimeout(updater);
+		updater = setTimeout(function(){
+			update_slick(e.target.value);
+		}, 2000);	
 	});
 
 	// for(var i=0; i < array.length; i++) {
