@@ -30,6 +30,7 @@ function vimeo_parse(url) {
 		return match[3];
 	} else return null;
 }
+
 var yt_regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 function youtube_parse(url) {
 	var match;
@@ -40,7 +41,7 @@ function youtube_parse(url) {
 
 var vine_regex = /^http(?:s?):\/\/(?:www\.)?vine\.co\/v\/([a-zA-Z0-9]{1,13})$/;
 function vine_parse(url) {
-	var match;
+	var match; 
 	if((match = url.match(vine_regex)) && match[1].length === 11) {
 		return match[1];
 	} else return null;
@@ -58,7 +59,9 @@ function slick_add(el, html, c) {
 				c = void(8);
 			}
 		}
-		el.slickAdd(html, c, addBefore);
+			el.slickAdd(html, c, addBefore);
+			slick_array.push(html);
+			console.log(slick_array);
 	} else {
 		el.slickAdd(html);
 	}
@@ -75,7 +78,6 @@ function parse_msg_txt(text, el) {
 	if((v = url_regex.exec(text)) && ~(s = text.indexOf(v[0]))) {
 		var url = text.substr(s);
 		var end;
-
 		if(~(end = url.indexOf(' '))) {
 			// if url has a space, we only want till the the space
 			//end = null;
@@ -102,6 +104,7 @@ function parse_msg_txt(text, el) {
 				}
 			});
 			var vid_parent;
+			debugger
 			slick_add(el,
 				vid_parent = cE('div', {data: {id:id}},
 					cE('img', {
